@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
-use App\User;
+use App\Models\User;
 use App\Scopes\ActiveScope;
 
 class GlobalScopeController extends Controller
@@ -18,7 +18,7 @@ class GlobalScopeController extends Controller
         DB::enableQueryLog();
         User::select('*')->get();
         User::select('*')->withoutGlobalScope(ActiveScope::class)->get();
-		User::select("*")->today()->get();
+        User::select("*")->today()->get();
         $quries = DB::getQueryLog();
         dd($quries);
     }
