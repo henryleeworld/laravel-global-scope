@@ -1,6 +1,6 @@
 <?php
   
-namespace App\Scopes;
+namespace App\Models\Scopes;
   
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -10,12 +10,8 @@ class ActiveScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $builder
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return void
      */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
         $builder->where('is_active', '=', 1);
     }

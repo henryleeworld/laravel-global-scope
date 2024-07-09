@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use App\Models\User;
-use App\Scopes\ActiveScope;
+use App\Models\Scopes\ActiveScope;
+use DB;
 
 class GlobalScopeController extends Controller
 {
@@ -15,11 +15,8 @@ class GlobalScopeController extends Controller
      */
     public function getUser()
     {
-        DB::enableQueryLog();
-        User::select('*')->get();
-        User::select('*')->withoutGlobalScope(ActiveScope::class)->get();
-        User::select("*")->today()->get();
-        $quries = DB::getQueryLog();
-        dd($quries);
+        echo User::select('*')->toRawSql() . PHP_EOL;
+        echo User::select('*')->withoutGlobalScope(ActiveScope::class)->toRawSql() . PHP_EOL;
+        echo User::select("*")->today()->toRawSql() . PHP_EOL;
     }
 }

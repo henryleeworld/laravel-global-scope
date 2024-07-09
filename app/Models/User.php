@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
-use App\Scopes\ActiveScope;
-use Carbon\Carbon;
+use App\Models\Scopes\ActiveScope;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Carbon;
 
+#[ScopedBy([ActiveScope::class])]
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -36,35 +38,23 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * Get the attributes that should be cast.
      *
-     * @var array<string, string>
+     * @return array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
-    /**
-     * Scope a query to only include popular users.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeToday($query)
+    protected function casts(): array
     {
-        return $query->whereDate('created_at', Carbon::today());
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 
     /**
-     * The "booting" method of the model.
-     *
-     * @return void
+     * Scope a query to only include registered users in today.
      */
-    protected static function boot()
+    public function scopeToday(Builder $query)
     {
-        parent::boot();
-  
-        static::addGlobalScope(new ActiveScope);
+        return $query->whereDate('created_at', Carbon::today());
     }
 }
