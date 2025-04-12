@@ -10,8 +10,6 @@ class GlobalScopeController extends Controller
 {
     /**
      * Get User.
-     *
-     * @return void
      */
     public function getUser()
     {
