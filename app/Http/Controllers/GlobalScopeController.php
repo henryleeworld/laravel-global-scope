@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Scopes\ActiveScope;
-use DB;
 
 class GlobalScopeController extends Controller
 {
